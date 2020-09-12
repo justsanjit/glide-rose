@@ -64,7 +64,8 @@
         @foreach($products as $product)
         <li class="col-span-1 flex flex-col text-center bg-white rounded-lg shadow">
           <div class="flex-1 flex flex-col p-8">
-            <img class="w-128 h-128 flex-shrink-0 mx-auto bg-black" src="https://picsum.photos/256" alt="">
+            <img class="w-128 h-128 flex-shrink-0 mx-auto bg-black" src="{{ $product->preview_image}}"
+              alt="{{ $product->title}}">
             <h3 class="mt-6 text-gray-900 text-sm leading-5 font-medium">{{ $product->name}} -
               ${{ $product->price_in_dollars}}</h3>
             <dl class="mt-1 flex-grow flex flex-col justify-between">
