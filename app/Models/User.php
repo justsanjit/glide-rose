@@ -2,9 +2,13 @@
 
 namespace App\Models;
 
+use App\Exceptions\InsufficientStockException;
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -57,4 +61,27 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function purchase(Product $product)
+    {
+        if (!$product->inStock(1)) {
+            throw new InsufficientStockException;
+        }
+
+        $order = DB::transaction(function () use ($product) {
+            $product->decreaseStock(1);
+
+            return $this->orders()->create([
+                'product_id' => $product->id,
+                'charge' => $product->price
+            ]);
+        });
+
+        return $order;
+    }
 }

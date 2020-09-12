@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\OrderConfirmationController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,8 +16,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'products')->name('products');
+Route::get('/', [ProductController::class, 'index'])->name('products');
 
-// Route::middleware(['auth:sanctum', 'verified'])->get('/', function () {
-//     return view('products');
-// })->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::post('products/{product}/order', [OrderController::class, 'store'])->name('orders.store');
+
+    Route::get('/order-confirmation/{order}', OrderConfirmationController::class)->name('order-confirmation');
+});
