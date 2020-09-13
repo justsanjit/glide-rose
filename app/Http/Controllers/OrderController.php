@@ -21,4 +21,11 @@ class OrderController extends Controller
             return back()->with('error', 'Unable to process the request.');
         }
     }
+
+    public function index(Request $request)
+    {
+        $orders = $request->user()->orders()->latest()->get();
+
+        return view('orders', compact('orders'));
+    }
 }

@@ -22,4 +22,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('products/{product}/order', [OrderController::class, 'store'])->name('orders.store');
 
     Route::get('/order-confirmation/{order}', OrderConfirmationController::class)->name('order-confirmation');
+
+    Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
 });

@@ -34,6 +34,11 @@
                             </x-jet-nav-link>
 
                             @auth
+                            <x-jet-nav-link href="{{ route('orders.index')}}"
+                                :active="request()->routeIs('orders.index')">
+                                Orders
+                            </x-jet-nav-link>
+
                             <x-jet-nav-link href="/user/profile" :active="request()->routeIs('profile.show')">
                                 {{ __('Profile') }}
                             </x-jet-nav-link>
