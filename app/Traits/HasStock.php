@@ -27,6 +27,7 @@ trait HasStock
 
         return $query->addSelect(['stock' =>  StockMutation::select(DB::raw('SUM(amount)'))
             ->whereColumn('stockable_id', $this->getTable()  . '.'  . $this->getKeyName())
-            ->where('stockable_type', $this->getMorphClass())]);
+            ->where('stockable_type', $this->getMorphClass())
+            ->where('created_at', '<=', $date->format('Y-m-d H:i:s'))]);
     }
 }
